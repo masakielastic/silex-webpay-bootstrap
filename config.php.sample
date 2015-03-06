@@ -1,0 +1,5 @@
+<?php
+
+// https://webpay.jp/settings
+$public_key = '';
+$private_key = '';
