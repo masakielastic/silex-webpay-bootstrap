@@ -1,5 +1,15 @@
 <?php
+if (!file_exists('config.php')) {
+  echo 'config.php.sample から config.php を用意してください。';
+  exit();
+}
+
 require_once 'config.php';
+
+if (!isset($public_key) || !isset($private_key) || empty($public_key) || empty($private_key)) {
+    echo 'config.php に公開可能鍵と非公開鍵を記入してください。';
+    exit();
+}
 ?>
 
 <!DOCTYPE html>

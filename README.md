@@ -4,8 +4,7 @@
 
 ## インストール
 
-「Download ZIP」で入手したファイルを展開します。config.php.sample をコピーして config.php をつくり、
-[WebPay のユーザ設定](https://webpay.jp/settings)のページで表示されるテスト環境用公開可能鍵とテスト環境用非公開鍵を入力します。入力作業が終わったら、ブラウザーからアクセスできる場所に FTP ソフトでアップロードします。
+「Download ZIP」で入手したファイルを展開します。次に config.php.sample を参考に config.php をつくります。config.php の編集にはテキストエディターを使います。[WebPay のユーザ設定](https://webpay.jp/settings)のページで表示されるテスト環境用公開可能鍵とテスト環境用非公開鍵を記入します。入力作業が終わったら、ブラウザーからアクセスできる場所に FTP ソフトでアップロードします。
 
 ## テスト
 
