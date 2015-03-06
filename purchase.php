@@ -2,14 +2,14 @@
 require_once 'config.php';
 require_once 'functions.php';
 
-if (empty($_POST['token'])) {
+if (empty($_POST['amount']) || empty($_POST['token'])) {
     header('Content-Type: application/json', true, 400);
     echo json_encode(array('status' => '400'));
     exit();
 }
 
 $data = array(
-  'amount' => 2500,
+  'amount' => $_POST['amount'],
   'currency' => 'jpy',
   'card' => $_POST['token']
 );
