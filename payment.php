@@ -48,12 +48,7 @@ $data = array(
 );
 
 $ret = webpay_charges($private_key, $data);
-
-if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
-  $json = json_encode($ret, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
-} else {
-  $json = json_encode($ret);
-}
+$json = json_encode($ret, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
 
 header('Content-Type: application/json', true, $ret['status']);
 echo $json;
