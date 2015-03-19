@@ -8,7 +8,10 @@ $msg = '';
 $valid = true;
 
 if (!isset($_SERVER['HTTP_X_CSRF_TOKEN'])) {
-  $msg .= 'CSRF 対策のトークンが送信されていません。';
+  $msg .= 'CSRF 対策のヘッダートークンが送信されていません。';
+  $valid = false;
+} else if (!isset($_SESSION['csrf-token'])) {
+  $msg .= 'CSRF 対策のセッショントークンが送信されていません。';
   $valid = false;
 } else {
   if (function_exists('hash_equals') &&
