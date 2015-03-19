@@ -1,4 +1,14 @@
 <?php
+function generate_csrf_token()
+{
+  return base64url_encode(openssl_random_pseudo_bytes(48));
+}
+
+function base64url_encode($data)
+{
+  return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+}
+
 function webpay_charges($key, $data)
 {
     $url = 'https://api.webpay.jp/v1/charges';
