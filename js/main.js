@@ -25,7 +25,7 @@ $(function() {
       return false;
     }
 
-    $.post('purchase.php', formData).done(function(data, textStatus, jqXHR) {
+    $.post('payment.php', formData).done(function(data, textStatus, jqXHR) {
       $('#msg').html('ありがとうございました。');
     }).fail(function(jqXHR, textStatus, errorThrown) {
       $('#msg').html('投稿が失敗しました。' + jqXHR.responseJSON['msg']);
