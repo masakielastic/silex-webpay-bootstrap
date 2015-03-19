@@ -2,9 +2,39 @@
 require_once 'config.php';
 require_once 'functions.php';
 
-if (!isset($_POST['amount']) || !isset($_POST['webpay-token'])) {
+session_start();
+
+$msg = '';
+$valid = true;
+
+if (!isset($_SERVER['HTTP_X_CSRF_TOKEN'])) {
+  $msg .= 'CSRF 対策のトークンが送信されていません。';
+  $valid = false;
+} else {
+  if (function_exists('hash_equals') &&
+    !hash_equals($_SERVER['HTTP_X_CSRF_TOKEN'], $_SESSION['csrf-token'])
+  ) {
+    $msg .= 'CSRF 対策のトークンが一致しません。';
+    $valid = false;
+  } else if ($_SERVER['HTTP_X_CSRF_TOKEN'] !== $_SESSION['csrf-token']) {
+    $msg .= 'CSRF 対策のトークンが一致しません。';
+    $valid = false;
+  }
+}
+
+if (!isset($_POST['webpay-token'])) {
+  $msg .= 'クレジットカードのトークンが送信されていません。';
+  $valid = false;
+}
+
+if (!isset($_POST['amount'])) {
+  $msg .= '金額が送信されていません。';
+  $valid = false;
+}
+
+if (!$valid) {
   header('Content-Type: application/json', true, 400);
-  echo json_encode(array('status' => '400'));
+  echo json_encode(array('msg' => $msg));
   exit;
 }
 
