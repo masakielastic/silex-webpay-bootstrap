@@ -1,6 +1,9 @@
 <?php
+require_once 'vendor/autoload.php';
 require_once 'config.php';
 require_once 'functions.php';
+
+use WebPay\WebPay;
 
 session_start();
 
@@ -47,8 +50,15 @@ $data = array(
   'card' => $_POST['webpay-token']
 );
 
-$ret = webpay_charges($private_key, $data);
-$json = json_encode($ret, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
+try {
+    $webpay = new WebPay($private_key);
+    $webpay->charge->create($data);
+    $status = 200;
+    $msg = ['msg' => 'ありがとうございます。'];
+} catch (Exception $e) {
+    $status = 400;
+    $msg = ['msg' => $e->getMessage()];
+}
 
-header('Content-Type: application/json', true, $ret['status']);
-echo $json;
+header('Content-Type: application/json', true, $status);
+echo json_encode($msg, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
