@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__.'/app/headers.php';
 
 if (empty($_SERVER['HTTPS'])) {
     echo 'SSL/TLS でアクセスしてください。';
