@@ -1,7 +1,7 @@
 <?php
-require_once 'vendor/autoload.php';
-require_once 'config.php';
-require_once 'functions.php';
+require_once __DIR__.'/app/vendor/autoload.php';
+require_once __DIR__.'/app/config.php';
+require_once __DIR__.'/app/functions.php';
 
 use WebPay\WebPay;
 
