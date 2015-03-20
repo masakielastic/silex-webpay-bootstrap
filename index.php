@@ -17,6 +17,11 @@ if (empty($public_key) || empty($private_key)) {
     exit;
 }
 
+if (!file_exists('template.php')) {
+    echo 'template.php.example から template.php を用意してください。';
+    exit;
+}
+
 session_start();
 if (!isset($_SESSION['csrf-token'])) {
   $_SESSION['csrf-token'] = generate_csrf_token();
