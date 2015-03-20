@@ -1,4 +1,4 @@
-# webpay-example-php
+# webpay-php-bootstrap
 
 レンタルホスティングサーバーなどで WebPay の決済を試すためのコードです。
 
