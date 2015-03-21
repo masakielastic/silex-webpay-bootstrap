@@ -20,14 +20,36 @@ if (!isset($public_key) || !isset($private_key)) {
     exit;
 }
 
-if (!file_exists(__DIR__.'/view/index.php')) {
-    echo 'index.php を用意してください。';
-    exit;
-}
-
 session_start();
-if (!isset($_SESSION['csrf-token'])) {
-    $_SESSION['csrf-token'] = generate_csrf_token();
+
+if (!isset($base_uri)) {
+    $base_uri = '';
 }
 
-include __DIR__.'/view/index.php';
+$uri = $_SERVER['REQUEST_URI'];
+$method = $_SERVER['REQUEST_METHOD'];
+
+if ($base_uri.'/' === $uri) {
+
+    if ($method !== 'GET') {
+        echo "許可される HTTP メソッドではありません。\n";
+        exit;
+    } else {
+
+    }
+
+    if (!file_exists(__DIR__.'/view/index.php')) {
+        echo 'index.php を用意してください。';
+        exit;
+    }
+
+    if (!isset($_SESSION['csrf-token'])) {
+        $_SESSION['csrf-token'] = generate_csrf_token();
+    }
+
+    include __DIR__.'/view/index.php';
+
+} else {
+    http_response_code(404);
+    echo "ページは見つかりませんでした。\n";
+}
