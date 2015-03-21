@@ -41,7 +41,7 @@ if (!isset($_POST['amount'])) {
 
 if (!$valid) {
     header('Content-Type: application/json', true, 400);
-    echo json_encode(array('msg' => $msg));
+    echo json_encode(['msg' => $msg]);
     exit;
 }
 

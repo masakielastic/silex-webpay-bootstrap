@@ -25,12 +25,12 @@ function webpay_post($url, $key, $data)
 {
     $body = http_build_query($data, PHP_QUERY_RFC3986);
 
-    $opts['http'] = array(
+    $opts['http'] = [
         'method' => 'POST',
         'header' => 'Authorization: Basic '.base64_encode($key.':')."\r\n".
                     'Content-Type: application/x-www-form-urlencoded',
         'content' => $body
-    );
+    ];
 
     $context  = stream_context_create($opts);
     $ret = file_get_contents($url, false, $context);
