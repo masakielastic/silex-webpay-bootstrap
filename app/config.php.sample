@@ -1,7 +1,11 @@
 <?php
-
 // 変数のコメントを解除して公開可能鍵と秘密鍵の文字列を記入します。
 // https://webpay.jp/settings
 
 // $public_key = 'test_public_XXXXXXXXXX';
 // $private_key = 'test_secret_XXXXXXXXX';
+
+// サブディレクトリに設置する場合、コメントを解除して修正してください。
+// 例: https://example.com/myapp
+
+// $base_uri = '/myapp';
