@@ -20,12 +20,12 @@ $(function() {
     }
 
     if (formData[1]['value'] === '') {
-      $('#msg').html('カード番号を入力してください。');
+      $('#msg').html('カード情報を入力してください。');
       el.prop('disabled', false);
       return false;
     }
 
-    $.post('payment.php', formData).done(function(data, textStatus, jqXHR) {
+    $.post(uri, formData).done(function(data, textStatus, jqXHR) {
       $('#msg').html('ありがとうございました。');
     }).fail(function(jqXHR, textStatus, errorThrown) {
       $('#msg').html('投稿が失敗しました。' + jqXHR.responseJSON['msg']);
