@@ -2,11 +2,6 @@
 require_once __DIR__.'/vendor/autoload.php';
 require_once __DIR__.'/headers.php';
 
-if (empty($_SERVER['HTTPS'])) {
-    echo 'SSL/TLS でアクセスしてください。';
-    exit;
-}
-
 if (!file_exists(__DIR__.'/config.php')) {
     echo 'config.php を用意してください。';
     exit;
