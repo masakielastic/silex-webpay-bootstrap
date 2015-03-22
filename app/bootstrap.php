@@ -1,64 +1,150 @@
 <?php
 require_once __DIR__.'/vendor/autoload.php';
-require_once __DIR__.'/headers.php';
+
+use Silex\Application;
+use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\SessionServiceProvider;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 if (!file_exists(__DIR__.'/config.php')) {
     echo 'config.php を用意してください。';
     exit;
 }
 
-require_once __DIR__.'/config.php';
-require_once __DIR__.'/functions.php';
+class MyApplication extends Application
+{
+    use Silex\Application\TwigTrait;
 
-if (!isset($public_key) || !isset($private_key)) {
-    echo 'config.php に公開可能鍵と非公開鍵を記入してください。';
-    exit;
+    public function csrfToken($length = 48)
+    {
+        return $this->base64urlEncode(openssl_random_pseudo_bytes($length));
+    }
+
+    public function base64urlEncode($str)
+    {
+        return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
+    }
 }
 
-if (!isset($base_uri)) {
-    $base_uri = '';
-}
+$app = new MyApplication();
+$app->register(new SessionServiceProvider(), [
+    'session.storage.options' => [
+         'name' => 'HelloApp',
+         'cookie_secure' => true,
+         'cookie_httponly' => true
+    ]
+]);
+$app->register(new TwigServiceProvider(), [
+    'twig.path' => __DIR__.'/views'
+]);
+//$app['debug'] = true;
+$app['session']->start();
 
-$uri = $_SERVER['REQUEST_URI'];
-$method = $_SERVER['REQUEST_METHOD'];
+$app->before(function() use(&$app) {
+    require_once __DIR__.'/config.php';
 
-session_start();
+    $app['config'] = [
+        'public_key' => $public_key,
+        'private_key' => $private_key,
+        'payment_uri' => $base_uri.'/payment'
+    ];
+});
 
-if ($base_uri.'/' === $uri) {
+$app->after(function (Request $request, Response $response) {
+    $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    $response->headers->set('X-Frame-Options', 'DENY');
+    $response->headers->set('X-Content-Type-Options', 'nosniff');
+    $response->headers->set('X-XSS-Protection', '1; mode=block');
 
-    if ($method !== 'GET') {
-        echo "許可されない HTTP メソッドです。\n";
-        exit;
+    return $response;
+});
+
+$app->get('/', function () use ($app) {
+
+    if (!$app['session']->has('csrf-token')) {
+        $app['session']->set('csrf-token', $app->csrfToken());
     }
 
     if (!file_exists(__DIR__.'/views/index.twig')) {
-        echo "index.twig を用意してください。\n";
-        exit;
+        return new Response("index.twig を用意してください。\n", 404);
     }
 
-    if (!isset($_SESSION['csrf-token'])) {
-        $_SESSION['csrf-token'] = generate_csrf_token();
-    }
-
-    $loader = new Twig_Loader_Filesystem(__DIR__.'/views');
-    $twig = new Twig_Environment($loader);
-    echo $twig->render('index.twig', [
-        'csrf_token' => $_SESSION['csrf-token'],
-        'public_key'=> $public_key,
-        'uri' => $base_uri.'/payment'
+    return $app->render('index.twig', [
+        'csrf_token' => $app['session']->get('csrf-token'),
+        'public_key'=> $app['config']['public_key'],
+        'uri' => $app['config']['payment_uri']
     ]);
+});
 
-} else if ($base_uri.'/payment' === $uri) {
+$app->post('/payment', function (Request $request) use ($app) {
 
-    if ($method !== 'POST') {
-        header('Content-Type: application/json', true, 400);
-        echo json_encode(['msg' => '許可されない HTTP メソッドです。']);
-        exit;
+    $msg = '';
+    $valid = true;
+
+    $valid = $valid && $request->headers->has('x_csrf_token');
+
+    if (!$valid) {
+        $msg .= 'CSRF 対策のヘッダートークンが送信されていません。';
     }
 
-    require_once __DIR__.'/vendor/autoload.php';
-    include __DIR__.'/views/payment.php';
-} else {
-    http_response_code(404);
-    echo "ページは見つかりませんでした。\n";
-}
+    $valid = $valid && $app['session']->has('csrf-token');
+
+    if (!$valid) {
+        $msg .= 'CSRF 対策のセッショントークンが送信されていません。';
+    }
+    
+    $valid = $valid &&
+    $request->headers->get('x_csrf_token') === $app['session']->get('csrf-token');
+
+    if (!$valid) {
+        $msg .= 'CSRF 対策のトークンが一致しません。';
+    }
+
+    $ret = $request->headers->get('x_csrf_token') === $app['session']->get('csrf-token') ?
+        'true' : 'false';
+
+    $app['session']->remove('csrf-token');
+
+    if (!$request->request->has('webpay-token')) {
+        $msg .= 'クレジットカードのトークンが送信されていません。';
+        $valid = false;
+    }
+
+    if (!$request->request->has('amount')) {
+        $msg .= '金額が送信されていません。';
+        $valid = false;
+    }
+
+    if (!$valid) {
+        return $app->json(['msg' => $msg], 400);
+    }
+
+    $data = [
+        'amount' => (int) $request->request->get('amount'),
+        'currency' => 'jpy',
+        'card' => $request->request->get('webpay-token')
+    ];
+
+    try {
+        $webpay = new WebPay\WebPay($app['config']['private_key']);
+        $webpay->charge->create($data);
+        $status = 200;
+        $msg = ['msg' => 'ありがとうございます。'];
+    } catch (\Exception $e) {
+        $status = $e->getStatus();
+        $msg = ['msg' => $e->getMessage()];
+    }
+
+    return $app->json($msg, $status);
+});
+
+$app->match('/payment', function (Request $request) use($app) {
+    return $app->json(['msg' => '許可されないメソッドです。'], 400);
+});
+
+$app->error(function (\Exception $e, $code) {
+    return new Response('存在しないページです。');
+});
+
+$app->run();

@@ -35,7 +35,8 @@ $(function() {
     $.post(uri, formData).done(function(data, textStatus, jqXHR) {
       msg.removeClass('alert-danger');
       msg.addClass('alert-success');
-      msg.children('p').html('ありがとうございます。');
+
+      msg.children('p').html(data['msg']);
       msg.show();
 
       el.removeClass('btn-primary');
