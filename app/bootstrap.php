@@ -36,7 +36,7 @@ if ($base_uri.'/' === $uri) {
         exit;
     }
 
-    if (!file_exists(__DIR__.'/view/index.php')) {
+    if (!file_exists(__DIR__.'/views/index.php')) {
         echo "index.php を用意してください。\n";
         exit;
     }
@@ -45,7 +45,7 @@ if ($base_uri.'/' === $uri) {
         $_SESSION['csrf-token'] = generate_csrf_token();
     }
 
-    include __DIR__.'/view/index.php';
+    include __DIR__.'/views/index.php';
 
 } else if ($base_uri.'/payment' === $uri) {
 
@@ -56,7 +56,7 @@ if ($base_uri.'/' === $uri) {
     }
 
     require_once __DIR__.'/vendor/autoload.php';
-    include __DIR__.'/view/payment.php';
+    include __DIR__.'/views/payment.php';
 } else {
     http_response_code(404);
     echo "ページは見つかりませんでした。\n";
