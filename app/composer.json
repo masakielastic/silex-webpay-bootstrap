@@ -1,5 +1,6 @@
 {
     "require": {
+        "twig/twig": "1.8.*",
         "webpay/webpay": "2.2.2"
     }
 }

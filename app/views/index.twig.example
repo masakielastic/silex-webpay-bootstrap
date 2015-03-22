@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="csrf-token" content="<?php echo $_SESSION['csrf-token']; ?>" />
+<meta name="csrf-token" content="{{ csrf_token }}" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="css/example.css">
@@ -32,7 +32,7 @@
       <script
         src="https://checkout.webpay.jp/v2/"
         class="webpay-button"
-        data-key="<?php echo $public_key; ?>"
+        data-key="{{ public_key }}"
         data-lang="ja"
         data-partial="true"
       ></script>
@@ -52,6 +52,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <script>
 // WebPay.testMode = true;
-var uri = '<?php echo $base_uri."/payment"; ?>';
+var uri = '{{ uri }}';
 </script>
 <script src="js/example.js"></script>

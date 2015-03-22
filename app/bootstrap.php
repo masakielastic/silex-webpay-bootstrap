@@ -1,5 +1,5 @@
 <?php
-
+require_once __DIR__.'/vendor/autoload.php';
 require_once __DIR__.'/headers.php';
 
 if (empty($_SERVER['HTTPS'])) {
@@ -36,8 +36,8 @@ if ($base_uri.'/' === $uri) {
         exit;
     }
 
-    if (!file_exists(__DIR__.'/views/index.php')) {
-        echo "index.php を用意してください。\n";
+    if (!file_exists(__DIR__.'/views/index.twig')) {
+        echo "index.twig を用意してください。\n";
         exit;
     }
 
@@ -45,7 +45,13 @@ if ($base_uri.'/' === $uri) {
         $_SESSION['csrf-token'] = generate_csrf_token();
     }
 
-    include __DIR__.'/views/index.php';
+    $loader = new Twig_Loader_Filesystem(__DIR__.'/views');
+    $twig = new Twig_Environment($loader);
+    echo $twig->render('index.twig', [
+        'csrf_token' => $_SESSION['csrf-token'],
+        'public_key'=> $public_key,
+        'uri' => $base_uri.'/payment'
+    ]);
 
 } else if ($base_uri.'/payment' === $uri) {
 
