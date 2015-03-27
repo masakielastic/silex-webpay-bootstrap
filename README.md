@@ -16,6 +16,9 @@ WebPay の決済を利用するための PHP アプリケーションです。
 
 実際にフォームに金額とクレジットカードの情報を入力して課金されることを確かめてみましょう。テスト環境で利用可能なクレジットカードの番号の一覧およびそれ以外の入力情報は[こちら](https://webpay.jp/docs/mock_cards)のページで公開されています。フォームを投稿して、投稿が成功したことを示すメッセージを見た後で、[ダッシュボード](https://webpay.jp/test/dashboard)も確認してみましょう。
 
+## WordPress のテンプレートを使う
+
+[こちら](https://github.com/masakielastic/webpay-php-bootstrap)のリポジトリからコードを入手してください。
 
 ## ライセンス
 
