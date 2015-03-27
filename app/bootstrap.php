@@ -12,6 +12,8 @@ if (!file_exists(__DIR__.'/config.php')) {
     exit;
 }
 
+require_once __DIR__.'/config.php';
+
 class MyApplication extends Application
 {
     use Silex\Application\TwigTrait;
@@ -28,9 +30,18 @@ class MyApplication extends Application
 }
 
 $app = new MyApplication();
+// $app['debug'] = true;
+
+$app->before(function() use(&$app, $config) {
+    $app['config'] = [
+        'public_key' => $config['public_key'],
+        'private_key' => $config['private_key'],
+        'payment_uri' => $config['base_uri'].'/payment'
+    ];
+});
 $app->register(new SessionServiceProvider(), [
     'session.storage.options' => [
-         'name' => 'HelloApp',
+         'name' => $config['app_name'],
          'cookie_secure' => true,
          'cookie_httponly' => true
     ]
@@ -38,18 +49,8 @@ $app->register(new SessionServiceProvider(), [
 $app->register(new TwigServiceProvider(), [
     'twig.path' => __DIR__.'/views'
 ]);
-//$app['debug'] = true;
+
 $app['session']->start();
-
-$app->before(function() use(&$app) {
-    require_once __DIR__.'/config.php';
-
-    $app['config'] = [
-        'public_key' => $public_key,
-        'private_key' => $private_key,
-        'payment_uri' => $base_uri.'/payment'
-    ];
-});
 
 $app->after(function (Request $request, Response $response) {
     $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
@@ -131,6 +132,7 @@ $app->post('/payment', function (Request $request) use ($app) {
         $webpay->charge->create($data);
         $status = 200;
         $msg = ['msg' => 'ありがとうございます。'];
+        $app['session']->remove('csrf-token');
     } catch (\Exception $e) {
         $status = $e->getStatus();
         $msg = ['msg' => $e->getMessage()];
