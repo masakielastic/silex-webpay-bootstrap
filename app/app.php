@@ -61,10 +61,14 @@ $app->after(function (Request $request, Response $response) {
     return $response;
 });
 
-$app->get('/', function () use ($app) {
+$app->get('/', function (Request $request) use ($app) {
 
     if (!$app['session']->has('csrf-token')) {
         $app['session']->set('csrf-token', $app->csrfToken());
+    }
+
+    if (!$request->isSecure()) {
+        return new Response("HTTPS でアクセスしてください。\n", 400);
     }
 
     if (!file_exists(__DIR__.'/views/index.twig')) {
@@ -82,6 +86,13 @@ $app->post('/payment', function (Request $request) use ($app) {
 
     $msg = '';
     $valid = true;
+
+    $valid = $valid && $request->isSecure();
+
+    if (!$valid) {
+        $msg .= 'HTTPS でアクセスしてください。';
+    }
+
 
     $valid = $valid && $request->headers->has('x_csrf_token');
 
@@ -142,7 +153,7 @@ $app->post('/payment', function (Request $request) use ($app) {
 });
 
 $app->match('/payment', function (Request $request) use($app) {
-    return $app->json(['msg' => '許可されないメソッドです。'], 400);
+    return $app->json(['msg' => '許可されない HTTP メソッドです。'], 400);
 });
 
 $app->error(function (\Exception $e, $code) {
