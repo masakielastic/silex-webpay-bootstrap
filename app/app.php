@@ -136,41 +136,36 @@ $app->post('/payment', function (Request $request) use ($app) {
     $msg = '';
     $valid = true;
 
-    $valid = $valid && $request->isSecure();
-
-    if (!$valid) {
+    if (!$request->isSecure()) {
         $msg .= 'HTTPS でアクセスしてください。';
+        $valid = false;
     }
 
-    $valid = $valid && $request->headers->has('x_csrf_token');
-
-    if (!$valid) {
+    if (!$request->headers->has('x_csrf_token')) {
         $msg .= 'CSRF 対策のヘッダートークンが送信されていません。';
+        $valid = false;
     }
 
-    $valid = $valid && $app['session']->has('csrf-token');
-
-    if (!$valid) {
+    if (!$app['session']->has('csrf-token')) {
         $msg .= 'CSRF 対策のセッショントークンが送信されていません。';
+        $valid = false;
     }
     
-    $valid = $valid &&
-    $app->hashEquals($app['session']->get('csrf-token'), $request->headers->get('x_csrf_token'));
-
-    if (!$valid) {
+    if (!$app->hashEquals(
+        $app['session']->get('csrf-token'),
+        $request->headers->get('x_csrf_token'))
+    ) {
         $msg .= 'CSRF 対策のトークンが一致しません。';
+        $valid = false;
     }
 
-    $valid = $valid && $request->request->has('webpay-token');
-
-    if (!$valid) {
+    if (!$request->request->has('webpay-token')) {
         $msg .= 'クレジットカードのトークンが送信されていません。';
+        $valid = false;
     }
 
-    $valid = $valid && $request->request->has('amount');
-
-    if (!$valid) {
-        $msg .= '金額が送信されていません。';
+    if (!$request->request->has('amount')) {
+        $msg .= '金額が送信されていません。'.$request->request->get('amount');
         $valid = false;
     }
 
