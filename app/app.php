@@ -7,6 +7,11 @@ use Silex\Provider\SessionServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
+if (!function_exists('openssl_random_pseudo_bytes')) {
+    echo 'OpenSSL エクステンションを利用できるようにしてください。';
+    exit;
+}
+
 if (!file_exists(__DIR__.'/config.php')) {
     echo 'config.php を用意してください。';
     exit;
