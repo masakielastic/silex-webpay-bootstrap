@@ -15,6 +15,7 @@ WebPay の決済を利用するための PHP アプリケーションです。
 ```bash
 git clone https://github.com/masakielastic/webpay-php-bootstrap.git
 cd webpay-php-bootstrap
+git checkout tags/v0.1
 composer update
 ```
 
