@@ -26,6 +26,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <script>
 // WebPay.testMode = true;
-var uri = '{{ uri }}';
+var payment_uri = '{{ uri }}';
 </script>
 <script src="js/example.js"></script>
