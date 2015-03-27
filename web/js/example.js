@@ -1,4 +1,4 @@
-$(function() {
+(function($) {
 
   $.ajaxSetup({
     beforeSend: function(xhr) {
@@ -32,7 +32,7 @@ $(function() {
       return false;
     }
 
-    $.post(uri, formData).done(function(data, textStatus, jqXHR) {
+    $.post(payment_uri, formData).done(function(data, textStatus, jqXHR) {
       msg.removeClass('alert-danger');
       msg.addClass('alert-success');
 
@@ -43,10 +43,11 @@ $(function() {
       el.addClass('btn-success');
     }).fail(function(jqXHR, textStatus, errorThrown) {
       msg.children('p').html('投稿が失敗しました。' + jqXHR.responseJSON['msg']);
+      msg.show();
       el.prop('disabled', false);
     });
 
     return false;
   });
 
-});
+})(jQuery);
