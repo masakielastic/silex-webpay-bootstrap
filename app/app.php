@@ -120,15 +120,17 @@ $app->get('/', function (Request $request) use ($app) {
         return new Response("HTTPS でアクセスしてください。\n", 400);
     }
 
-    if (!file_exists(__DIR__.'/views/index.twig')) {
-        return new Response("index.twig を用意してください。\n", 404);
+    if (file_exists(__DIR__.'/views/index.twig')) {
+        return $app->render('index.twig', [
+            'csrf_token' => $app['session']->get('csrf-token'),
+            'public_key'=> $app['config']['public_key'],
+            'uri' => $app['config']['payment_uri']
+        ]);
+    } else if (file_exists(__DIR__.'/views/index.php')) {
+        include __DIR__.'/views/index.php';
     }
 
-    return $app->render('index.twig', [
-        'csrf_token' => $app['session']->get('csrf-token'),
-        'public_key'=> $app['config']['public_key'],
-        'uri' => $app['config']['payment_uri']
-    ]);
+    return new Response("index.twig もしくは index.php を用意してください。\n", 404);
 });
 
 $app->post('/payment', function (Request $request) use ($app) {
@@ -159,13 +161,13 @@ $app->post('/payment', function (Request $request) use ($app) {
         $valid = false;
     }
 
-    if (!$request->request->has('webpay-token')) {
-        $msg .= 'クレジットカードのトークンが送信されていません。';
+    if (!$request->request->has('amount')) {
+        $msg .= '金額が送信されていません。'.$request->request->get('amount');
         $valid = false;
     }
 
-    if (!$request->request->has('amount')) {
-        $msg .= '金額が送信されていません。'.$request->request->get('amount');
+    if (!$request->request->has('webpay-token')) {
+        $msg .= 'クレジットカードのトークンが送信されていません。';
         $valid = false;
     }
 
