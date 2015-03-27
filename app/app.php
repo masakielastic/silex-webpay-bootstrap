@@ -85,7 +85,7 @@ $app->before(function() use(&$app, $config) {
     $app['config'] = [
         'public_key' => $config['public_key'],
         'private_key' => $config['private_key'],
-        'charge_uri' => $config['base_uri'].'/charge'
+        'charge_uri' => $config['base_uri'].'/charges'
     ];
 });
 $app->register(new SessionServiceProvider(), [
@@ -133,7 +133,7 @@ $app->get('/', function (Request $request) use ($app) {
     return new Response("index.twig もしくは index.php を用意してください。\n", 404);
 });
 
-$app->post('/charge', function (Request $request) use ($app) {
+$app->post('/charges', function (Request $request) use ($app) {
 
     $msg = '';
     $valid = true;
@@ -195,7 +195,7 @@ $app->post('/charge', function (Request $request) use ($app) {
     return $app->json($msg, $status);
 });
 
-$app->match('/charge', function (Request $request) use($app) {
+$app->match('/charges', function (Request $request) use($app) {
     return $app->json(['msg' => '許可されない HTTP メソッドです。'], 400);
 });
 
