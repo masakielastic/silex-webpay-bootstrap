@@ -1,2 +1,2 @@
 <?php
-include __DIR__.'/app/bootstrap.php';
+include __DIR__.'/app/app.php';
