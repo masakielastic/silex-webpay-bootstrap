@@ -7,15 +7,15 @@
   });
 
   var msg = $('#alertMsg');
-  var el = $('#paymentSubmit');
+  var el = $('#chargeSubmit');
 
   el.click(function(event) {
     event.preventDefault();
     el.prop('disabled', true);
 
     var formData = {
-      'amount': amount = $('#inputAmount').val(),
-      'webpay-token': $('#paymentForm').serializeArray()[0]['value']
+      'amount': amount = $('#chargeAmount').val(),
+      'webpay-token': $('#chargeForm').serializeArray()[0]['value']
     };
 
     if (formData['amount'] === '') {
