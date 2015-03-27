@@ -23,12 +23,12 @@ composer update
 
 次に `app/views` フォルダーで `config.php.sample` をもとに `config.php` をつくります。[WebPay のユーザ設定](https://webpay.jp/settings)のページで表示されるテスト環境用公開可能鍵とテスト環境用非公開鍵を記入します。
 
-次にサーバーにインストールする場合のディレクトリ構成を考えます。`web` フォルダーに入っているすべてのファイルをインターネットにアクセスできる場所に設置し、それ以外はインターネットからアクセスできない場所に設置します。`.htaccess` は隠しファイルを表示する OS のオプションを指定していないと表示されないので、[こちら](https://raw.githubusercontent.com/masakielastic/webpay-php-bootstrap/master/web/.htaccess)のページをもとにテキストエディターでつくるか、コマンドラインないしターミナルの `cp` コマンドを使います。
+次にサーバーにインストールする場合のディレクトリ構成を考えます。`web` フォルダーに入っているすべてのファイルをインターネットにアクセスできる場所に設置し、それ以外はインターネットからアクセスできない場所に設置します。
 
  * webpay-php-bootstrap
  * public_html/index.php, css, js, .htaccess
 
-ディレクトリ構成に合わせて `index.php` の `include` で指定される `app/app.php` へのパスをサーバーの環境に合わせて修正します。
+`.htaccess` は隠しファイルを表示する OS のオプションを指定していないと表示されないので、[こちら](https://raw.githubusercontent.com/masakielastic/webpay-php-bootstrap/master/web/.htaccess)のページをもとにテキストエディターでつくるか、コマンドラインないしターミナルの `cp` コマンドを使います。ディレクトリ構成に合わせて `index.php` の `include` で指定される `app/app.php` へのパスをサーバーの環境に合わせて修正します。
 
 ```php
 include '/path/to/app/app.php';
