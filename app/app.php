@@ -32,6 +32,50 @@ class MyApplication extends Application
     {
         return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
     }
+
+
+    /**
+     * https://github.com/symfony/security-core/blob/master/Util/StringUtils.php
+     *
+     * Compares two strings.
+     *
+     * This method implements a constant-time algorithm to compare strings.
+     *
+     * @param string $knownString The string of known length to compare against
+     * @param string $userInput   The string that the user can control
+     *
+     * @return bool    true if the two strings are the same, false otherwise
+     */
+
+    public function hashEquals($knownString, $userInput)
+    {
+
+        if (function_exists('hash_equals')) {
+            return hash_equals($knownString, $userInput);
+        }
+
+        // Prevent issues if string length is 0
+        $knownString .= chr(0);
+        $userInput .= chr(0);
+
+        $knownLen = strlen($knownString);
+        $userLen = strlen($userInput);
+
+        // Set the result to the difference between the lengths
+        $result = $knownLen - $userLen;
+
+        // Note that we ALWAYS iterate over the user-supplied length
+        // This is to prevent leaking length information
+        for ($i = 0; $i < $userLen; $i++) {
+            // Using % here is a trick to prevent notices
+            // It's safe, since if the lengths are different
+            // $result is already non-0
+            $result |= (ord($knownString[$i % $knownLen]) ^ ord($userInput[$i]));
+        }
+
+        // They are only identical strings if $result is exactly 0...
+        return 0 === $result;
+    }
 }
 
 $app = new MyApplication();
@@ -98,7 +142,6 @@ $app->post('/payment', function (Request $request) use ($app) {
         $msg .= 'HTTPS でアクセスしてください。';
     }
 
-
     $valid = $valid && $request->headers->has('x_csrf_token');
 
     if (!$valid) {
@@ -112,23 +155,21 @@ $app->post('/payment', function (Request $request) use ($app) {
     }
     
     $valid = $valid &&
-    $request->headers->get('x_csrf_token') === $app['session']->get('csrf-token');
+    $app->hashEquals($app['session']->get('csrf-token'), $request->headers->get('x_csrf_token'));
 
     if (!$valid) {
         $msg .= 'CSRF 対策のトークンが一致しません。';
     }
 
-    $ret = $request->headers->get('x_csrf_token') === $app['session']->get('csrf-token') ?
-        'true' : 'false';
+    $valid = $valid && $request->request->has('webpay-token');
 
-    $app['session']->remove('csrf-token');
-
-    if (!$request->request->has('webpay-token')) {
+    if (!$valid) {
         $msg .= 'クレジットカードのトークンが送信されていません。';
-        $valid = false;
     }
 
-    if (!$request->request->has('amount')) {
+    $valid = $valid && $request->request->has('amount');
+
+    if (!$valid) {
         $msg .= '金額が送信されていません。';
         $valid = false;
     }
