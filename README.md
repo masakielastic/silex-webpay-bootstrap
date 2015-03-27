@@ -1,6 +1,12 @@
 # webpay-php-bootstrap
 
-レンタルホスティングサーバーなどで WebPay の決済を試すためのコードです。
+WebPay の決済を利用するための PHP アプリケーションです。
+
+## サーバーの要件
+
+  * HTTP サーバーで SSL 通信が利用可能であること
+  * PHP 5.4.0 とそれ以降 - [webpay-php](https://github.com/webpay/webpay-php)) を使うため
+  * OpenSSL エクステンション - `openssl_random_pseudo_bytes` による乱数生成のため
 
 ## インストール
 
