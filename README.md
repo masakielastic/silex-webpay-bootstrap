@@ -10,7 +10,16 @@ WebPay の決済を利用するための PHP アプリケーションです。
 
 ## インストール
 
-「Download ZIP」で入手したファイルを展開します。次に config.php.sample を参考に config.php をつくります。config.php の編集にはテキストエディターを使います。[WebPay のユーザ設定](https://webpay.jp/settings)のページで表示されるテスト環境用公開可能鍵とテスト環境用非公開鍵を記入します。入力作業が終わったら、ブラウザーからアクセスできる場所に FTP ソフトでアップロードします。
+「Download ZIP」で入手したファイルを展開します。次に `app/views` フォルダーで `config.php.sample` をもとに `config.php` をつくります。[WebPay のユーザ設定](https://webpay.jp/settings)のページで表示されるテスト環境用公開可能鍵とテスト環境用非公開鍵を記入します。
+
+次にサーバーにインストールする場合のディレクトリ構成を考えます。`web` フォルダー以外のファイルはインターネットからアクセスできない位置に設置します。
+
+ * webpay-php-bootstrap
+ * public_html/index.php, css, js, .htaccess
+
+ディレクトリ構成に合わせて `web/index.php` の `include` で指定される `app/app.php` へのパスをサーバーの環境に合わせて修正します。
+
+編集作業が終わったら、FTP ソフトでファイルをサーバーにアップロードします。
 
 ## テスト
 
