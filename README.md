@@ -21,9 +21,11 @@ composer update
 
 ## インストール
 
-次に `app/views` フォルダーで `config.php.sample` をもとに `config.php` をつくります。[WebPay のユーザ設定](https://webpay.jp/settings)のページで表示されるテスト環境用公開可能鍵とテスト環境用非公開鍵を記入します。
+最初に設定ファイルを用意します。`app` フォルダーで `config.php.sample` をもとに `config.php` をつくります。[WebPay のユーザ設定](https://webpay.jp/settings)のページで表示されるテスト環境用公開可能鍵とテスト環境用非公開鍵を記入します。
 
-次にサーバーにインストールする場合のディレクトリ構成を考えます。`web` フォルダーに入っているすべてのファイルをインターネットにアクセスできる場所に設置し、それ以外はインターネットからアクセスできない場所に設置します。
+次にビューファイルを用意します。`app/views` の `index.twig.example`、`layout.twig.example` をもとに `index.twig`、`layout.twig` をつくります。
+
+その次は、サーバーにインストールする場合のディレクトリ構成を考えます。`web` フォルダーに入っているすべてのファイルをインターネットにアクセスできる場所に設置し、それ以外はインターネットからアクセスできない場所に設置します。
 
  * webpay-php-bootstrap
  * public_html/index.php, css, js, .htaccess
