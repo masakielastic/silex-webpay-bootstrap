@@ -85,7 +85,7 @@ $app->before(function() use(&$app, $config) {
     $app['config'] = [
         'public_key' => $config['public_key'],
         'private_key' => $config['private_key'],
-        'payment_uri' => $config['base_uri'].'/payment'
+        'charge_uri' => $config['base_uri'].'/charge'
     ];
 });
 $app->register(new SessionServiceProvider(), [
@@ -124,7 +124,7 @@ $app->get('/', function (Request $request) use ($app) {
         return $app->render('index.twig', [
             'csrf_token' => $app['session']->get('csrf-token'),
             'public_key'=> $app['config']['public_key'],
-            'uri' => $app['config']['payment_uri']
+            'charge_uri' => $app['config']['charge_uri']
         ]);
     } else if (file_exists(__DIR__.'/views/index.php')) {
         include __DIR__.'/views/index.php';
@@ -133,7 +133,7 @@ $app->get('/', function (Request $request) use ($app) {
     return new Response("index.twig もしくは index.php を用意してください。\n", 404);
 });
 
-$app->post('/payment', function (Request $request) use ($app) {
+$app->post('/charge', function (Request $request) use ($app) {
 
     $msg = '';
     $valid = true;
@@ -195,7 +195,7 @@ $app->post('/payment', function (Request $request) use ($app) {
     return $app->json($msg, $status);
 });
 
-$app->match('/payment', function (Request $request) use($app) {
+$app->match('/charge', function (Request $request) use($app) {
     return $app->json(['msg' => '許可されない HTTP メソッドです。'], 400);
 });
 

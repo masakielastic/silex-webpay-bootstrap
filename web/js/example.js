@@ -32,7 +32,7 @@
       return false;
     }
 
-    $.post(payment_uri, formData).done(function(data, textStatus, jqXHR) {
+    $.post(charge_uri, formData).done(function(data, textStatus, jqXHR) {
       msg.removeClass('alert-danger');
       msg.addClass('alert-success');
 
