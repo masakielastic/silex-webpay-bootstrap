@@ -23,9 +23,9 @@
 </div>
 
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script src="hbower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script>
 // WebPay.testMode = true;
-var payment_uri = '{{ uri }}';
+var charge_uri = '{{ charge_uri }}';
 </script>
 <script src="js/example.js"></script>

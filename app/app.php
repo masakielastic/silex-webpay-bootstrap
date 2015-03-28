@@ -81,16 +81,16 @@ class MyApplication extends Application
 $app = new MyApplication();
 // $app['debug'] = true;
 
-$app->before(function() use(&$app, $config) {
+$app->before(function() use(&$app, $app_config) {
     $app['config'] = [
-        'public_key' => $config['public_key'],
-        'private_key' => $config['private_key'],
-        'charge_uri' => $config['base_uri'].'/charges'
+        'public_key' => $app_config['public_key'],
+        'private_key' => $app_config['private_key'],
+        'charge_uri' => $app_config['base_uri'].'/charges'
     ];
 });
 $app->register(new SessionServiceProvider(), [
     'session.storage.options' => [
-         'name' => $config['app_name'],
+         'name' => $app_config['app_name'],
          'cookie_secure' => true,
          'cookie_httponly' => true
     ]
