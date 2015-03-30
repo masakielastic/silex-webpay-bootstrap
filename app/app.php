@@ -7,18 +7,6 @@ use Silex\Provider\SessionServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-if (!function_exists('openssl_random_pseudo_bytes')) {
-    echo 'OpenSSL エクステンションを利用できるようにしてください。';
-    exit;
-}
-
-if (!file_exists(__DIR__.'/config.php')) {
-    echo 'config.php を用意してください。';
-    exit;
-}
-
-require_once __DIR__.'/config.php';
-
 class MyApplication extends Application
 {
     use Silex\Application\TwigTrait;
@@ -78,6 +66,23 @@ class MyApplication extends Application
     }
 }
 
+if (!function_exists('openssl_random_pseudo_bytes')) {
+    echo 'OpenSSL エクステンションを利用できるようにしてください。';
+    exit;
+}
+
+if (!file_exists(__DIR__.'/config.php')) {
+    echo 'config.php を用意してください。';
+    exit;
+}
+
+require_once __DIR__.'/config.php';
+
+if (empty($app_config['public_key']) || empty($app_config['private_key'])) {
+    echo 'config.php に公開可能鍵と非公開鍵を記入してください。';
+    exit;
+}
+
 $app = new MyApplication();
 // $app['debug'] = true;
 
@@ -89,11 +94,7 @@ $app->before(function() use(&$app, $app_config) {
     ];
 });
 $app->register(new SessionServiceProvider(), [
-    'session.storage.options' => [
-         'name' => $app_config['app_name'],
-         'cookie_secure' => true,
-         'cookie_httponly' => true
-    ]
+    'session.storage.options' => $app_config['session.storage.options']
 ]);
 $app->register(new TwigServiceProvider(), [
     'twig.path' => __DIR__.'/views'
@@ -122,14 +123,23 @@ $app->get('/', function (Request $request) use ($app) {
         return new Response("HTTPS でアクセスしてください。\n", 400);
     }
 
-    if (file_exists(__DIR__.'/views/index.twig')) {
-        return $app->render('index.twig', [
-            'csrf_token' => $app['session']->get('csrf-token'),
-            'public_key'=> $app['config']['public_key'],
-            'charge_uri' => $app['config']['charge_uri']
-        ]);
-    } else if (file_exists(__DIR__.'/views/index.php')) {
-        include __DIR__.'/views/index.php';
+    foreach ($app_config['views'] as $view) {
+
+       $path = __DIR__.'/views/'.$view;
+       $ext = pathinfo($view, PATHINFO_EXTENSION);
+
+        if (file_exists($path)) {
+
+            if ('twig' === $ext) {
+                return $app->render($view, [
+                    'csrf_token' => $app['session']->get('csrf-token'),
+                    'public_key'=> $app['config']['public_key'],
+                    'charge_uri' => $app['config']['charge_uri']
+                ]);
+            } else if ('php' === $ext) {
+                include $path;
+            }
+        }
     }
 
     return new Response("index.twig もしくは index.php を用意してください。\n", 404);
