@@ -99,7 +99,9 @@ $app->register(new TwigServiceProvider(), [
     'twig.path' => __DIR__.'/views'
 ]);
 
-$app['session']->start();
+if (!$app['session']->isStarted()) {
+    $app['session']->start();
+}
 
 $app->after(function (Request $request, Response $response) {
     $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
