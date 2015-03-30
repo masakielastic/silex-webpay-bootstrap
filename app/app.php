@@ -138,8 +138,15 @@ $app->get('/', function (Request $request) use ($app) {
                     'public_key'=> $app['config']['public_key'],
                     'charge_uri' => $app['config']['charge_uri']
                 ]);
-            } else if ('php' === $ext) {
+            }
+
+            if ('php' === $ext) {
+                ob_start();
                 include $path;
+                $content = ob_get_contents();
+                ob_end_clean();
+
+                return new Response($content);
             }
         }
     }
