@@ -29,7 +29,17 @@ composer update
 
 ## WordPress のテンプレートを使う
 
-[こちら](https://github.com/masakielastic/webpay-php-bootstrap-wp-view)のリポジトリからコードを入手してください。
+[こちら](https://github.com/masakielastic/webpay-php-bootstrap-wp-view)のリポジトリから `index.example.php` を手に入れて、`views` フォルダーに設置してください。WordPress の `wp-blog-header.php` を読み込むためにパスを修正します。
+
+```php
+include '/path/to/wp-blog-header.php';
+```
+
+`config.php` を修正して、`index.example.php` を優先して読み込むようにします。
+
+```php
+'views' => ['index.example.php', 'index.example.twig'],
+```
 
 ## ディレクトリのカスタマイズ
 
