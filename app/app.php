@@ -7,13 +7,23 @@ use Silex\Provider\SessionServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
+if (5 >= PHP_MAJOR_VERSION && !function_exists('openssl_random_pseudo_bytes')) {
+    exit('openssl_random_pseudo_bytes を利用できるようにしてください。');
+}
+
 class MyApplication extends Application
 {
     use Silex\Application\TwigTrait;
 
     public function csrfToken($length = 48)
     {
-        return $this->base64urlEncode(openssl_random_pseudo_bytes($length));
+        if (PHP_MAJOR_VERSION >= 7) {
+            $bytes = random_bytes($length);
+        } else {
+            $bytes = openssl_random_pseudo_bytes($length);
+        }
+
+        return $this->base64urlEncode($bytes);
     }
 
     public function base64urlEncode($str)
@@ -37,7 +47,6 @@ class MyApplication extends Application
 
     public function hashEquals($knownString, $userInput)
     {
-
         if (function_exists('hash_equals')) {
             return hash_equals($knownString, $userInput);
         }
@@ -66,21 +75,14 @@ class MyApplication extends Application
     }
 }
 
-if (!function_exists('openssl_random_pseudo_bytes')) {
-    echo 'OpenSSL エクステンションを利用できるようにしてください。';
-    exit;
-}
-
 if (!file_exists(__DIR__.'/config.php')) {
-    echo 'config.php を用意してください。';
-    exit;
+    exit('config.php を用意してください。');
 }
 
 require_once __DIR__.'/config.php';
 
 if (empty($app_config['public_key']) || empty($app_config['private_key'])) {
-    echo 'config.php に公開可能鍵と非公開鍵を記入してください。';
-    exit;
+    exit('config.php に公開可能鍵と非公開鍵を記入してください。');
 }
 
 $app = new MyApplication();
