@@ -1,6 +1,6 @@
 <?php
 
-$config = [
+$app_config = [
 
     // 公開可能鍵と秘密鍵の文字列を記入します。
     // https://webpay.jp/settings

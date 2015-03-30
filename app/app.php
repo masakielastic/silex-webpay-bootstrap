@@ -86,13 +86,13 @@ if (empty($app_config['public_key']) || empty($app_config['private_key'])) {
 $app = new MyApplication();
 // $app['debug'] = true;
 
-$app->before(function() use(&$app, $app_config) {
-    $app['config'] = [
-        'public_key' => $app_config['public_key'],
-        'private_key' => $app_config['private_key'],
-        'charge_uri' => $app_config['base_uri'].'/charges'
-    ];
-});
+$app['config'] = [
+    'public_key' => $app_config['public_key'],
+    'private_key' => $app_config['private_key'],
+    'charge_uri' => $app_config['base_uri'].'/charges',
+    'views' => $app_config['views']
+];
+
 $app->register(new SessionServiceProvider(), [
     'session.storage.options' => $app_config['session.storage.options']
 ]);
@@ -123,7 +123,7 @@ $app->get('/', function (Request $request) use ($app) {
         return new Response("HTTPS でアクセスしてください。\n", 400);
     }
 
-    foreach ($app_config['views'] as $view) {
+    foreach ($app['config']['views'] as $view) {
 
        $path = __DIR__.'/views/'.$view;
        $ext = pathinfo($view, PATHINFO_EXTENSION);
@@ -142,7 +142,7 @@ $app->get('/', function (Request $request) use ($app) {
         }
     }
 
-    return new Response("index.twig もしくは index.php を用意してください。\n", 404);
+    return new Response("ビューファイルが見つかりませんでした。\n", 404);
 });
 
 $app->post('/charges', function (Request $request) use ($app) {
@@ -201,7 +201,7 @@ $app->post('/charges', function (Request $request) use ($app) {
         $app['session']->remove('csrf-token');
     } catch (\Exception $e) {
         $status = $e->getStatus();
-        $msg = ['msg' => $e->getMessage()];
+        $msg = ['msg' => '決済を完了できませんでした: '.$e->getMessage()];
     }
 
     return $app->json($msg, $status);
