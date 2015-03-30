@@ -6,7 +6,7 @@ WebPay の決済を利用するための PHP アプリケーションです。
 
   * HTTP サーバーで SSL 通信が利用可能であること
   * PHP 5.4.0 とそれ以降 - [webpay-php](https://github.com/webpay/webpay-php)) を使うため
-  * OpenSSL エクステンション - `openssl_random_pseudo_bytes` による乱数生成のため
+  * PHP 7.0 以前であれば OpenSSL エクステンション - `openssl_random_pseudo_bytes` による乱数生成のため
 
 ## ダウンロード
 
@@ -21,30 +21,23 @@ composer update
 
 ## インストール
 
-最初に設定ファイルを用意します。`app` フォルダーで `config.php.sample` をもとに `config.php` をつくります。[WebPay のユーザ設定](https://webpay.jp/settings)のページで表示されるテスト環境用公開可能鍵とテスト環境用非公開鍵を記入します。
+まずは動作の確認を目的とした設置方法を説明します。`https://example.org/webpay-php-bootstrap/web` にアクセスできるように `webpay-php-bootstrap` フォルダーを FTP/FTPS ソフトでアップロードします。次に `app` フォルダーで `config.sample.php` をもとに `config.php` をつくります。[WebPay のユーザ設定](https://webpay.jp/settings)のページで表示されるテスト環境用公開可能鍵とテスト環境用非公開鍵を記入します。
 
-次にビューファイルを用意します。`app/views` の `index.twig.example`、`layout.twig.example` をもとに `index.twig`、`layout.twig` をつくります。
-
-その次は、サーバーにインストールする場合のディレクトリ構成を考えます。`web` フォルダーに入っているすべてのファイルをインターネットにアクセスできる場所に設置し、それ以外はインターネットからアクセスできない場所に設置します。
-
- * webpay-php-bootstrap
- * public_html/index.php, css, js, .htaccess
-
-`.htaccess` は隠しファイルを表示する OS のオプションを指定していないと表示されないので、[こちら](https://raw.githubusercontent.com/masakielastic/webpay-php-bootstrap/master/web/.htaccess)のページをもとにテキストエディターでつくるか、コマンドラインないしターミナルの `cp` コマンドを使います。ディレクトリ構成に合わせて `index.php` の `include` で指定される `app/app.php` へのパスをサーバーの環境に合わせて修正します。
-
-```php
-include '/path/to/app/app.php';
-```
-
-編集作業が終わったら、FTP ソフトでファイルをサーバーにアップロードします。
-
-## テスト
+## 動作の確認
 
 実際にフォームに金額とクレジットカードの情報を入力して課金されることを確かめてみましょう。テスト環境で利用可能なクレジットカードの番号の一覧およびそれ以外の入力情報は[こちら](https://webpay.jp/docs/mock_cards)のページで公開されています。フォームを投稿して、投稿が成功したことを示すメッセージを見た後で、[ダッシュボード](https://webpay.jp/test/dashboard)も確認してみましょう。
 
 ## WordPress のテンプレートを使う
 
 [こちら](https://github.com/masakielastic/webpay-php-bootstrap-wp-view)のリポジトリからコードを入手してください。
+
+## ディレクトリのカスタマイズ
+
+`app` をウェブからアクセスできない位置に設置した上で `web` ディレクトリーに入っている `index.php` を修正します。
+
+```php
+/path/to/app.php
+```
 
 ## ライセンス
 
