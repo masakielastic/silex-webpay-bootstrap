@@ -2,6 +2,11 @@
 
 Silex で開発された WebPay の決済アプリです。
 
+## 問い合わせ
+
+バグ報告や機能追加要望などの問い合わせは
+Issues もしくは E メール (`masakielastic@gmail.com`)、[Facebook](https://www.facebook.com/masakielastic) や Line (masakielastic) などからお願いします。
+
 ## スクリーンショット
 ![スクリーンショット](screenshots/screenshot.png)
 
