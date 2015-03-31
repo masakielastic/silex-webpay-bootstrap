@@ -18,6 +18,14 @@ Cookie の情報を盗まれないようにするために、ほかのユーザ�
  * [XSERVER](https://www.xserver.ne.jp/manual/man_server_ssl.php) - `https://example-com.ssl-xserver.jp/`
  * [FIREBIRD](http://www.firebird.jp/support/man/domain_shared_ssl.php) - `https://example-com.ssl-netowl.jp/`
 
+### 独自ドメインと SSL/TLS
+
+年間1〜2万円前後で SSL/TLS 証明書の更新を代行してくれるレンタルサーバーの例です。
+
+ * [ロリポップ](http://lolipop.jp/ssl/)
+ * [XSERVER](https://www.xserver.ne.jp/price/price_ssl.php) 
+ * [FIREBIRD](http://www.firebird.jp/service/install_ssl_certify.php)
+
 ## ダウンロード
 
 「[release](https://github.com/masakielastic/silex-webpay-bootstrap/releases)」のページから入手したファイル (`silex-webpay-bootstrap.zip`) を展開します。`git` および `composer` を使う場合は次のようになります。
