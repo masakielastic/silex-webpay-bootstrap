@@ -85,7 +85,9 @@ if (empty($app_config['public_key']) || empty($app_config['private_key'])) {
 }
 
 $app = new MyApplication();
-// $app['debug'] = true;
+if ($app_config['debug']) {
+    $app['debug'] = true;
+}
 
 $app['config'] = [
     'public_key' => $app_config['public_key'],

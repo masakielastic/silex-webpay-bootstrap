@@ -27,5 +27,7 @@ $app_config = [
        'name' => 'payment_app',
        'cookie_secure' => true,
        'cookie_httponly' => true
-    ]
+    ],
+    // デバッグモードの切り替え
+    'debug' => false
 ];
