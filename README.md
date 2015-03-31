@@ -4,6 +4,8 @@ Silex で開発された WebPay の決済アプリです。
 
 ## スクリーンショット
 ![スクリーンショット](screenshots/screenshot1.png)
+![スクリーンショット2](screenshots/screenshot2.png)
+![スクリーンショット3](screenshots/screenshot3.png)
 
 ## サーバーの要件
 
