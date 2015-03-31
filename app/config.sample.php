@@ -10,9 +10,12 @@ $app_config = [
     // test_secret_XXXXXXXXX
     'private_key' => '',
 
-    // 公開する URI に合わせて修正してください。
-    // 例1: https://example.org/webpay-php-bootstrap/web 'base_uri' => '/webpay-php-bootstrap/web'
-    // 例2; https://example.org/ 'base_uri' => ''
+    // 公開する URL に合わせて修正してください。
+    // 例1: https://example.org/silex-bootstrap/web
+    // 'base_uri' => '/silex-webpay-bootstrap/web'
+    //
+    // 例2; https://example.org/
+    // 'base_uri' => ''
 
     'base_uri' => '/silex-webpay-bootstrap/web',
 
