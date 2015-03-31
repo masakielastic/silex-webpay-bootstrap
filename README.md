@@ -8,6 +8,15 @@ WebPay の決済を利用するための PHP アプリケーションです。
   * PHP 5.4.0 とそれ以降 - [webpay-php](https://github.com/webpay/webpay-php) を使うためです。
   * `random_bytes` (PHP 7 から標準関数) もしくは `openssl_random_pseudo_bytes` が利用できること。ランダムな文字列の生成に必要です。
 
+## レンタルサーバーを利用する場合の注意事項
+### 共有 SSL を利用する
+
+Cookie の情報を盗まれないようにするために、ほかのユーザーと区別がつくサブドメインが利用できるサービスを選ぶことをおすすめします。
+
+ * [さくらインターネット](https://help.sakura.ad.jp/app/answers/detail/a_id/2331) - `https://******.sakura.ne.jp/`
+ * [ロリポップ](http://lolipop.jp/manual/user/ssl/) - `https://□□□-○○○.ssl-lolipop.jp/`
+ * [XSERVER](https://www.xserver.ne.jp/manual/man_server_ssl.php) - `https://example-com.ssl-xserver.jp/`
+
 ## ダウンロード
 
 「[release](https://github.com/masakielastic/silex-webpay-bootstrap/releases)」のページから入手したファイル (`silex-webpay-bootstrap.zip`) を展開します。`git` および `composer` を使う場合は次のようになります。
