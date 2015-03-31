@@ -18,7 +18,7 @@ Issues もしくは E メール (`masakielastic@gmail.com`)、[Facebook](https:/
 
 ## ダウンロード
 
-「[release](https://github.com/masakielastic/silex-webpay-bootstrap/releases)」のページから入手したファイル (`silex-webpay-bootstrap.zip`) を展開します。`git` および `composer` を使う場合は次のようになります。
+「[release](https://github.com/masakielastic/silex-webpay-bootstrap/releases)」のページから入手したファイル (`silex-webpay-bootstrap.zip`) を展開します。`git` を使う場合は次のコマンドを実行します。`composer`、`npm`、`bower` はあらかじめインストールしてあることが前提です。
 
 ```bash
 git clone https://github.com/masakielastic/silex-web-bootstrap.git
@@ -30,36 +30,52 @@ bower install
 
 ## インストール
 
-まずは動作の確認を目的としたインストール方法を説明します。ドメインの例として `example.org` を使います。`https://example.org/silex-webpay-bootstrap/web` にアクセスできるように `silex-webpay-bootstrap` フォルダーを FTP/FTPS ソフトでアップロードします。次に `app` フォルダーで `config.example.php` をもとに `config.php` をつくります。[WebPay のユーザ設定](https://webpay.jp/settings)のページで表示されるテスト環境用公開可能鍵とテスト環境用非公開鍵を記入します。
+動作の確認を目的とした方法を説明します。利用するドメインを `example.org` とします。実際の作業の際にはご利用のドメインに置き換えて考えてください。
+
+まず `https://example.org/silex-webpay-bootstrap/web` にアクセスできる位置に `silex-webpay-bootstrap` フォルダーを FTP/FTPS ソフトでアップロードします。
+
+次に `app` フォルダーで `config.example.php` をコピーして `config.php` をつくります。[WebPay のユーザ設定](https://webpay.jp/settings)のページで表示されるテスト環境用公開可能鍵とテスト環境用非公開鍵を記入します。
+
+```php
+// test_public_XXXXXXXXXX
+'public_key' => 'test_public_XXXXXXXXXX',
+// test_secret_XXXXXXXXX
+'private_key' => 'test_secret_XXXXXXXXX',
+```
 
 ## 動作の確認
 
-実際にフォームに金額とクレジットカードの情報を入力して課金されることを確かめてみましょう。テスト環境で利用可能なクレジットカードの番号の一覧およびそれ以外の入力情報は[こちら](https://webpay.jp/docs/mock_cards)のページで公開されています。フォームを投稿して、投稿が成功したことを示すメッセージを見た後で、[ダッシュボード](https://webpay.jp/test/dashboard)も確認してみましょう。
+実際にフォームに金額とクレジットカードの情報を入力して課金されることを確かめます。
 
-## WordPress のテンプレートを使う
+テスト環境で利用可能なクレジットカードの番号の一覧およびそれ以外の入力情報は[こちら](https://webpay.jp/docs/mock_cards)のページで公開されています。フォームを投稿して、投稿が成功したことを示すメッセージを見た後で、[ダッシュボード](https://webpay.jp/test/dashboard)を確認しましょう。
 
-[こちら](https://github.com/masakielastic/wp-webpay-bootstrap)のリポジトリから `index.example.php` を手に入れて、`views` フォルダーに設置してください。WordPress の `wp-blog-header.php` を読み込むためにパスを修正します。
+## WordPress のテーマを使う
+
+[こちら](https://github.com/masakielastic/wp-webpay-bootstrap)のリポジトリから `index.example.php` を手に入れて、`views` フォルダーに設置します。WordPress のテーマを読み込むために `index.example.php` に記載される `wp-blog-header.php` へのパスを修正します。
 
 ```php
 include '/path/to/wp-blog-header.php';
 ```
 
-`config.php` を修正して、`index.example.php` を優先して読み込むようにします。
+次に `views` フォルダーにある `config.php` を次のように修正して、`index.example.twig` よりも `index.example.php` を優先して読み込むようにします。
 
 ```php
 'views' => ['index.example.php', 'index.example.twig'],
 ```
 
-## ディレクトリやファイルのカスタマイズ
+## ディレクトリ構成
 
-WebPay の非公開鍵などの情報を盗まれないように `web` フォルダー以外のすべてのファイルはインターネットからアクセスできない位置に設置します。
+実際にアプリケーションを運用する場合、WebPay の非公開鍵などの情報を盗まれないように `web` フォルダー以外のすべてのファイルはインターネットからアクセスできない位置に設置します。
+
 `web` フォルダーに含まれるファイルはすべてインターネットからアクセスできる位置に設置します。隠しファイルの `.htaccess` も含まれていることもお忘れなく。OS での表示方法がわからなければ、[こちらの URL](https://github.com/masakielastic/silex-webpay-bootstrap/blob/master/web/.htaccess) から入手してください (「Raw」からダウンロードできます)。そして `index.php` に記載されている `app/app.php` へのパスを修正します。
 
 ```php
 /path/to/app/app.php
 ```
 
-`views` フォルダーに入っているビューファイル (`index.example.twig` )をカスタマイズする場合、今後のアップデート作業の際に、間違って上書きしてしまわないようにファイルの名前を変えるとよいでしょう。
+## ビューファイルの修正
+
+`views` フォルダーにあるビューファイル (`index.example.twig` )をカスタマイズする場合、今後のアップデート作業の際に、間違って上書きしてしまわないようにファイルの名前を変えるとよいでしょう。
 
 たとえば、
 `index.example.twig` や `layout.example.twig` をコピーして `index.twig` および `layout.twig` をつくります。そして `index.twig` の冒頭の行も修正します。
