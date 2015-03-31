@@ -1,6 +1,6 @@
 # silex-webpay-bootstrap
 
-Silex で開発された WebPay の決済アプリです。
+PHP フレームワークの Silex で開発された WebPay の決済アプリです。トップページのみのアプリで商品を追加するには HTML を修正します。
 
 ## 問い合わせ
 
@@ -30,7 +30,7 @@ bower install
 
 ## インストール
 
-まずは動作の確認を目的とした設置方法を説明します。ドメインの例として `example.org` を使います。`https://example.org/silex-webpay-bootstrap/web` にアクセスできるように `silex-webpay-bootstrap` フォルダーを FTP/FTPS ソフトでアップロードします。次に `app` フォルダーで `config.example.php` をもとに `config.php` をつくります。[WebPay のユーザ設定](https://webpay.jp/settings)のページで表示されるテスト環境用公開可能鍵とテスト環境用非公開鍵を記入します。
+まずは動作の確認を目的としたインストール方法を説明します。ドメインの例として `example.org` を使います。`https://example.org/silex-webpay-bootstrap/web` にアクセスできるように `silex-webpay-bootstrap` フォルダーを FTP/FTPS ソフトでアップロードします。次に `app` フォルダーで `config.example.php` をもとに `config.php` をつくります。[WebPay のユーザ設定](https://webpay.jp/settings)のページで表示されるテスト環境用公開可能鍵とテスト環境用非公開鍵を記入します。
 
 ## 動作の確認
 
