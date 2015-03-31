@@ -93,7 +93,8 @@ $app['config'] = [
     'public_key' => $app_config['public_key'],
     'private_key' => $app_config['private_key'],
     'charge_uri' => $app_config['base_uri'].'/charges',
-    'views' => $app_config['views']
+    'views' => $app_config['views'],
+    'msg' => $app_config['msg']
 ];
 
 $app->register(new SessionServiceProvider(), [
@@ -207,11 +208,15 @@ $app->post('/charges', function (Request $request) use ($app) {
         $webpay = new WebPay\WebPay($app['config']['private_key']);
         $webpay->charge->create($data);
         $status = 200;
-        $msg = ['msg' => 'ありがとうございます。'];
+        $msg = [
+            'msg' => $app['config']['msg']['success']
+        ];
         $app['session']->remove('csrf-token');
     } catch (\Exception $e) {
         $status = $e->getStatus();
-        $msg = ['msg' => '決済を完了できませんでした: '.$e->getMessage()];
+        $msg = [
+        'msg' => $app['config']['msg']['failure'].$e->getMessage()
+        ];
     }
 
     return $app->json($msg, $status);

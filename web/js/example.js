@@ -42,7 +42,7 @@
       el.removeClass('btn-primary');
       el.addClass('btn-success');
     }).fail(function(jqXHR, textStatus, errorThrown) {
-      msg.children('p').html('投稿が失敗しました。' + jqXHR.responseJSON['msg']);
+      msg.children('p').html(jqXHR.responseJSON['msg']);
       msg.show();
       el.prop('disabled', false);
     });

@@ -22,6 +22,11 @@ $app_config = [
     // トップページで読み込まれるビューファイルの名前
     'views' => ['index.example.twig', 'index.example.php'],
 
+    'msg' => [
+        'success' => 'ありがとうございます。',
+        'failure' => '決済を完了できませんでした。'
+    ],
+
     // SessionServiceProvider に渡す設定値
    'session.storage.options' => [
        'name' => 'payment_app',
