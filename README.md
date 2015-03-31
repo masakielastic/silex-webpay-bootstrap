@@ -1,6 +1,6 @@
-# webpay-php-bootstrap
+# silex-webpay-bootstrap
 
-WebPay の決済を利用するための PHP アプリケーションです。
+Silex で開発された WebPay の決済アプリです。
 
 ## サーバーの要件
 
