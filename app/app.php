@@ -31,7 +31,6 @@ class MyApplication extends Application
         return rtrim(strtr(base64_encode($str), '+/', '-_'), '=');
     }
 
-
     /**
      * https://github.com/symfony/security-core/blob/master/Util/StringUtils.php
      *
