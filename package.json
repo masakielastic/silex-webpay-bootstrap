@@ -1,7 +1,11 @@
 {
-  "name": "webpay-php-bootstrap",
-  "dependencies": [
-    "gulp",
-    "gulp-shell"
-  ]
+  "name": "silex-webpay-bootstrap",
+  "repository" : {
+  	"type": "git",
+    "url": "git@github.com:masakielastic/silex-webpay-bootstrap.git"
+  },
+  "dependencies": {
+    "gulp": "^3.8.11",
+    "gulp-shell": "^0.4.0"
+  }
 }
