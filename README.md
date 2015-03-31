@@ -15,8 +15,9 @@ Silex で開発された WebPay の決済アプリです。
 ```bash
 git clone https://github.com/masakielastic/silex-web-bootstrap.git
 cd silex-webpay-bootstrap
-git checkout tags/v0.1
 composer update
+npm install
+bower install
 ```
 
 ## インストール
