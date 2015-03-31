@@ -14,7 +14,7 @@ $app_config = [
     // 例1: https://example.org/webpay-php-bootstrap/web 'base_uri' => '/webpay-php-bootstrap/web'
     // 例2; https://example.org/ 'base_uri' => ''
 
-    'base_uri' => '/webpay-php-bootstrap/web',
+    'base_uri' => '/silex-webpay-bootstrap/web',
 
     // トップページで読み込まれるビューファイルの名前
     'views' => ['index.example.twig', 'index.example.php'],
