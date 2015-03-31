@@ -63,7 +63,8 @@ include '/path/to/wp-blog-header.php';
 'views' => ['index.example.php', 'index.example.twig'],
 ```
 
-## ディレクトリ構成
+## 実際にアプリを運用する場合に必要な作業
+### ディレクトリ構成の変更
 
 実際にアプリケーションを運用する場合、WebPay の非公開鍵などの情報を盗まれないように `web` フォルダー以外のすべてのファイルはインターネットからアクセスできない位置に設置します。
 
@@ -73,7 +74,7 @@ include '/path/to/wp-blog-header.php';
 /path/to/app/app.php
 ```
 
-## ビューファイルの修正
+### ビューファイルの修正
 
 `views` フォルダーにあるビューファイル (`index.example.twig` )をカスタマイズする場合、今後のアップデート作業の際に、間違って上書きしてしまわないようにファイルの名前を変えるとよいでしょう。
 
@@ -90,8 +91,8 @@ include '/path/to/wp-blog-header.php';
 'views' => ['index.twig', 'index.php'],
 ```
 
-## レンタルサーバーを利用する場合の注意事項
-### 共有 SSL を利用する
+### レンタルサーバーを利用する場合の注意事項
+#### 共有 SSL を利用する
 
 Cookie の情報を盗まれないようにするために、ほかのユーザーと区別がつくサブドメインが利用できるサービスを選ぶことをおすすめします。
 
@@ -100,7 +101,7 @@ Cookie の情報を盗まれないようにするために、ほかのユーザ�
  * [XSERVER](https://www.xserver.ne.jp/manual/man_server_ssl.php) - `https://example-com.ssl-xserver.jp/`
  * [FIREBIRD](http://www.firebird.jp/support/man/domain_shared_ssl.php) - `https://example-com.ssl-netowl.jp/`
 
-### 独自ドメインと SSL/TLS
+#### 独自ドメインと SSL/TLS
 
 年間1〜2万円前後で SSL/TLS 証明書の更新を代行してくれるレンタルサーバーの例です。
 
