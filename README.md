@@ -2,6 +2,9 @@
 
 Silex で開発された WebPay の決済アプリです。
 
+## スクリーンショット
+![スクリーンショット](screenshots/screenshot1.png)
+
 ## サーバーの要件
 
   * Apache HTTP サーバー - mod_rewrite (URI の書き換え) と mod_ssl (SSL/TLS) が利用できること
