@@ -8,7 +8,7 @@ PHP フレームワークの Silex で開発された WebPay の決済アプリ�
 Issues もしくは E メール (`masakielastic@gmail.com`)、[Facebook](https://www.facebook.com/masakielastic) や Line (masakielastic) などからお願いします。
 
 ## スクリーンショット
-![スクリーンショット](screenshots/screenshot.png)
+![スクリーンショット](screenshot.png)
 
 ## サーバーの要件
 
@@ -23,7 +23,7 @@ Issues もしくは E メール (`masakielastic@gmail.com`)、[Facebook](https:/
 ```bash
 git clone https://github.com/masakielastic/silex-web-bootstrap.git
 cd silex-webpay-bootstrap
-composer update
+composer install
 npm install
 bower install
 ```

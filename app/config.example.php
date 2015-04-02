@@ -11,16 +11,16 @@ $app_config = [
     'private_key' => '',
 
     // 公開する URL に合わせて修正してください。
-    // 例1: https://example.org/silex-bootstrap/web
-    // 'base_uri' => '/silex-webpay-bootstrap/web'
+    // 例1: https://example.org/silex-bootstrap
+    // 'base_uri' => '/silex-webpay-bootstrap'
     //
     // 例2; https://example.org/
     // 'base_uri' => ''
 
-    'base_uri' => '/silex-webpay-bootstrap/web',
+    'base_uri' => '/silex-webpay-bootstrap',
 
     // トップページで読み込まれるビューファイルの名前
-    'views' => ['index.example.twig', 'index.example.php'],
+    'views' => ['index.example.php', 'index.example.twig'],
 
     'msg' => [
         'success' => 'ありがとうございます。',

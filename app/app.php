@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/vendor/autoload.php';
 
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
@@ -89,13 +89,24 @@ if ($app_config['debug']) {
     $app['debug'] = true;
 }
 
-$app['config'] = [
-    'public_key' => $app_config['public_key'],
-    'private_key' => $app_config['private_key'],
-    'charge_uri' => $app_config['base_uri'].'/charges',
-    'views' => $app_config['views'],
-    'msg' => $app_config['msg']
-];
+$app->before(function (Request $request, Application $app) use (&$app_config) {
+    $dirs = explode('/', $request->getRequestUri());
+
+    if (count($dirs) === 2) {
+        $app_config['base_uri'] = '';
+    } else {
+        $app_config['base_uri'] = '/'.$dirs[1];
+    }
+
+    $app['config'] = [
+        'public_key' => $app_config['public_key'],
+        'private_key' => $app_config['private_key'],
+        'views' => $app_config['views'],
+        'msg' => $app_config['msg'],
+        'charge_uri' => $app_config['base_uri'].'/charges'
+    ];
+
+});
 
 $app->register(new SessionServiceProvider(), [
     'session.storage.options' => $app_config['session.storage.options']

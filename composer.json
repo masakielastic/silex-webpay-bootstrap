@@ -3,5 +3,8 @@
         "silex/silex": "~1.2",
         "twig/twig": "1.8.*",
         "webpay/webpay": "2.2.2"
+    },
+    "config": {
+        "vendor-dir": "app/vendor"
     }
 }
