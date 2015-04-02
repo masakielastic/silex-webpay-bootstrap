@@ -32,7 +32,7 @@ bower install
 
 動作の確認を目的とした方法を説明します。利用するドメインを `example.org` とします。実際の作業の際にはご利用のドメインに置き換えて考えてください。
 
-まず `https://example.org/silex-webpay-bootstrap/web` にアクセスできる位置に `silex-webpay-bootstrap` フォルダーを FTP/FTPS ソフトでアップロードします。
+まず `https://example.org/silex-webpay-bootstrap/` にアクセスできる位置に `silex-webpay-bootstrap` フォルダーを FTP/FTPS ソフトでアップロードします。
 
 次に `app` フォルダーで `config.example.php` をコピーして `config.php` をつくります。[WebPay のユーザ設定](https://webpay.jp/settings)のページで表示されるテスト環境用公開可能鍵とテスト環境用非公開鍵を記入します。
 
@@ -57,18 +57,10 @@ bower install
 include '/path/to/wp-blog-header.php';
 ```
 
-次に `views` フォルダーにある `config.php` を次のように修正して、`index.example.twig` よりも `index.example.php` を優先して読み込むようにします。
-
-```php
-'views' => ['index.example.php', 'index.example.twig'],
-```
-
 ## 実際にアプリを運用する場合に必要な作業
 ### ディレクトリ構成の変更
 
-実際にアプリケーションを運用する場合、WebPay の非公開鍵などの情報を盗まれないように `web` フォルダー以外のすべてのファイルはインターネットからアクセスできない位置に設置します。
-
-`web` フォルダーに含まれるファイルはすべてインターネットからアクセスできる位置に設置します。隠しファイルの `.htaccess` も含まれていることもお忘れなく。OS での表示方法がわからなければ、[こちらの URL](https://github.com/masakielastic/silex-webpay-bootstrap/blob/master/web/.htaccess) から入手してください (「Raw」からダウンロードできます)。そして `index.php` に記載されている `app/app.php` へのパスを修正します。
+実際にアプリケーションを運用する場合、WebPay の非公開鍵などの情報を盗まれないように `app`  フォルダーはインターネットからアクセスできない位置に設置します。そして `index.php` に記載されている `app/app.php` へのパスを修正します。
 
 ```php
 /path/to/app/app.php
@@ -76,7 +68,7 @@ include '/path/to/wp-blog-header.php';
 
 ### ビューファイルの修正
 
-`views` フォルダーにあるビューファイル (`index.example.twig` )をカスタマイズする場合、今後のアップデート作業の際に、間違って上書きしてしまわないようにファイルの名前を変えるとよいでしょう。
+`views` フォルダーにあるビューファイル (`index.example.twig`) をカスタマイズする場合、今後のアップデート作業の際に、間違って上書きしてしまわないようにファイルの名前を変えるとよいでしょう。
 
 たとえば、
 `index.example.twig` や `layout.example.twig` をコピーして `index.twig` および `layout.twig` をつくります。そして `index.twig` の冒頭の行も修正します。
@@ -85,11 +77,7 @@ include '/path/to/wp-blog-header.php';
 {% extends "layout.twig" %}
 ```
 
-次に `config.php` の `views` で指定するファイル名も修正します。
-
-```php
-'views' => ['index.twig', 'index.php'],
-```
+読み込まれるファイルの名前や優先順位は `config.php` の `views` で調整してください。
 
 ### レンタルサーバーを利用する場合の注意事項
 #### 共有 SSL を利用する
