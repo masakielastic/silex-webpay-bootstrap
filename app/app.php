@@ -74,28 +74,27 @@ class MyApplication extends Application
     }
 }
 
-if (!file_exists(__DIR__.'/config.php')) {
-    exit('config.php を用意してください。');
-}
-
-require_once __DIR__.'/config.php';
-
-if (empty($app_config['public_key']) || empty($app_config['private_key'])) {
-    exit('config.php に公開可能鍵と非公開鍵を記入してください。');
-}
-
 $app = new MyApplication();
-if ($app_config['debug']) {
-    $app['debug'] = true;
-}
+$app->before(function (Request $request, Application $app) {
 
-$app->before(function (Request $request, Application $app) use (&$app_config) {
+    if (!file_exists(__DIR__.'/config.php')) {
+        throw new Exception('config.php を用意してください。');
+    }
+
+    require_once __DIR__.'/config.php';
+
+    if (empty($app_config['public_key']) || empty($app_config['private_key'])) {
+        throw new Exception('config.php に公開可能鍵と非公開鍵を記入してください。');
+    }
+
     $dirs = explode('/', $request->getRequestUri());
-
-    if (count($dirs) === 2) {
+    $count = count($dirs);
+    if ($count === 2) {
         $app_config['base_uri'] = '';
-    } else {
+    } else if ($count === 3) {
         $app_config['base_uri'] = '/'.$dirs[1];
+    } else {
+        throw new Exception('1階層よりも深いディレクトリはサポートされていません。');
     }
 
     $app['config'] = [
@@ -109,7 +108,11 @@ $app->before(function (Request $request, Application $app) use (&$app_config) {
 });
 
 $app->register(new SessionServiceProvider(), [
-    'session.storage.options' => $app_config['session.storage.options']
+    'session.storage.options' => [
+       'name' => 'payment_app',
+       'cookie_secure' => true,
+       'cookie_httponly' => true
+    ]
 ]);
 $app->register(new TwigServiceProvider(), [
     'twig.path' => __DIR__.'/views'
@@ -238,7 +241,12 @@ $app->match('/charges', function (Request $request) use($app) {
 });
 
 $app->error(function (\Exception $e, $code) {
-    return new Response('存在しないページです。');
+
+    if ($code == 404) {
+        return new Response('ページが見つかりませんでした。', $code);
+    }
+
+    return $e->getMessage();
 });
 
 $app->run();

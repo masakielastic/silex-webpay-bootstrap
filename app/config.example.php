@@ -10,29 +10,11 @@ $app_config = [
     // test_secret_XXXXXXXXX
     'private_key' => '',
 
-    // 公開する URL に合わせて修正してください。
-    // 例1: https://example.org/silex-bootstrap
-    // 'base_uri' => '/silex-webpay-bootstrap'
-    //
-    // 例2; https://example.org/
-    // 'base_uri' => ''
-
-    'base_uri' => '/silex-webpay-bootstrap',
-
     // トップページで読み込まれるビューファイルの名前
     'views' => ['index.example.php', 'index.example.twig'],
 
     'msg' => [
         'success' => 'ありがとうございます。',
         'failure' => '決済を完了できませんでした。'
-    ],
-
-    // SessionServiceProvider に渡す設定値
-   'session.storage.options' => [
-       'name' => 'payment_app',
-       'cookie_secure' => true,
-       'cookie_httponly' => true
-    ],
-    // デバッグモードの切り替え
-    'debug' => false
+    ]
 ];
