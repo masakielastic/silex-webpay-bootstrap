@@ -33,3 +33,11 @@
     <p></p>
   </div>
 {% endblock %}
+
+{% block js_content %}
+<script>
+// WebPay.testMode = true;
+var charge_uri = '{{ charge_uri }}';
+</script>
+<script src="js/example.js"></script>
+{% endblock %}
