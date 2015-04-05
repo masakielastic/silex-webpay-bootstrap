@@ -18,7 +18,9 @@ Issues もしくは E メール (`masakielastic@gmail.com`)、[Facebook](https:/
 
 ## ダウンロード
 
-「[release](https://github.com/masakielastic/silex-webpay-bootstrap/releases)」のページから入手したファイル (`silex-webpay-bootstrap.zip`) を展開します。`git` を使う場合は次のコマンドを実行します。`composer`、`npm`、`bower` はあらかじめインストールしてあることが前提です。
+「[release](https://github.com/masakielastic/silex-webpay-bootstrap/releases)」のページから最新のバージョンのファイル (`silex-webpay-bootstrap.zip`) をダウンロードして展開します。
+
+`git` を使う場合、次のコマンドを実行します。`composer`、`npm`、`bower` があらかじめインストールされていることを前提します。
 
 ```bash
 git clone https://github.com/masakielastic/silex-web-bootstrap.git
