@@ -11,7 +11,7 @@ $app_config = [
     'private_key' => '',
 
     // トップページで読み込まれるビューファイルの名前
-    'views' => ['index.example.php', 'index.example.twig'],
+    'views' => ['index.php', 'index.twig', 'index.example.php', 'index.example.twig'],
 
     'msg' => [
         'success' => 'ありがとうございます。',
