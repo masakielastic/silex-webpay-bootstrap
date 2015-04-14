@@ -7,8 +7,8 @@ use Silex\Provider\SessionServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-if (5 >= PHP_MAJOR_VERSION && !function_exists('openssl_random_pseudo_bytes')) {
-    exit('openssl_random_pseudo_bytes を利用できるようにしてください。');
+if (!function_exists('random_bytes') && !function_exists('openssl_random_pseudo_bytes')) {
+    exit('random_bytes もしくは openssl_random_pseudo_bytes を利用できるようにしてください。');
 }
 
 class MyApplication extends Application
